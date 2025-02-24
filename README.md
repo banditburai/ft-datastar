@@ -1,3 +1,3 @@
-# DataStar FastHTML
+# Datastar FastHTML
 
-DataStar integration for FastHTML.
+Datastar integration for FastHTML.

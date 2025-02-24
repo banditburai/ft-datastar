@@ -25,23 +25,23 @@ class DatastarFastHTMLResponse(StreamingResponse):
         
         super().__init__(generator(XMLSSEGenerator), *args, **kwargs)
 
-def srt(handler: Callable) -> Callable:
+def sse(handler: Callable) -> Callable:    
     """Decorator that handles sequential signal/fragment updates with dynamic targeting"""
     @wraps(handler)
     def wrapped(*args, **kwargs):
-        def sse_generator(sse):
+        def sse_generator(generator):
             async def proxy():
                 gen = handler(*args, **kwargs)
                 async for item_type, payload in gen:
                     if item_type == "signals":
-                        yield sse.merge_signals(payload)
+                        yield generator.merge_signals(payload)
                     elif item_type == "fragments":
                         # Allow flexible fragment definitions
                         fragment, *options = payload if isinstance(payload, tuple) else (payload,)
                         selector = options[0] if len(options) > 0 else None
                         merge_mode = options[1] if len(options) > 1 else "morph"
                         
-                        yield sse.merge_fragments(
+                        yield generator.merge_fragments(
                             fragment,
                             selector=selector,
                             merge_mode=merge_mode
