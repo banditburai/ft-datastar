@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "firefly", email = "promptsiren@gmail.com" }
 ]
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "datastar-py>=0.4.2",
     "python-fasthtml>=0.12.1",

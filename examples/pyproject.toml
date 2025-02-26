@@ -3,7 +3,7 @@ name = "examples"
 version = "0.1.0"
 description = "Examples for FastHTML + Datastar"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "ft-datastar",
     "python-fasthtml>=0.12.1",
