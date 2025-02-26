@@ -3,10 +3,15 @@
 from fasthtml.starlette import StreamingResponse
 from fasthtml.common import to_xml
 from datastar_py.sse import SSE_HEADERS, ServerSentEventGenerator
-from typing import Any, AsyncGenerator, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, Optional, Tuple
 from functools import wraps
 
-class DatastarFastHTMLResponse(StreamingResponse):
+class FastHTMLDatastarSSEResponse(StreamingResponse):
+    """FastHTML-specific SSE response for DataStar integration.
+    
+    This class extends StreamingResponse to handle XML conversion for FastHTML components
+    and provides integration with DataStar's SSE functionality.
+    """
     def __init__(self, generator, *args, **kwargs):
         kwargs["headers"] = SSE_HEADERS
         
@@ -51,7 +56,7 @@ def sse(handler: Callable) -> Callable:
             
             return proxy()
         
-        return DatastarFastHTMLResponse(sse_generator)
+        return FastHTMLDatastarSSEResponse(sse_generator)
     return wrapped
 
 def signal_update(**signals: str) -> Tuple[str, Dict[str, str]]:

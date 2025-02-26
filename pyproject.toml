@@ -18,3 +18,8 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/ft_datastar"]
+exclude = ["examples/*"]
+
+# Uncomment this for local development only
+# [tool.uv.workspace]
+# members = ["examples"]
