@@ -6,7 +6,7 @@ from .helpers import (
     ds_indicator, ds_on, ds_show, ds_signals, ds_text
 )
 from .sse import (
-    DatastarFastHTMLResponse, srt, signal_update, fragment_update
+    DatastarFastHTMLResponse, sse, signal_update, fragment_update
 )
 
 __all__ = [
@@ -26,7 +26,7 @@ __all__ = [
     
     # SSE
     "DatastarFastHTMLResponse",
-    "srt",
+    "sse",
     "signal_update",
     "fragment_update",
 ]
