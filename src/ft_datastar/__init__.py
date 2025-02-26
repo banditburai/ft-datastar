@@ -7,7 +7,7 @@ from .helpers import (
 )
 from .sse import (
     FastHTMLDatastarSSEResponse, 
-    sse, signal_update, fragment_update
+    sse, update_signals, update_fragments
 )
 
 __all__ = [
@@ -28,6 +28,6 @@ __all__ = [
     # SSE
     "FastHTMLDatastarSSEResponse",    
     "sse",
-    "signal_update",
-    "fragment_update",
+    "update_signals",
+    "update_fragments",
 ]

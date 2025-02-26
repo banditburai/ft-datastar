@@ -8,6 +8,52 @@ Datastar integration for FastHTML.
 pip install git+https://github.com/banditburai/ft-datastar.git
 ```
 
+## Usage example in FastHTML
+```python
+from fasthtml.common import *
+from ft_datastar import *
+from json import dumps as json_dumps
+
+datastar_script = Script(src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.8/bundles/datastar.js", type="module")
+
+app, rt = fast_app(
+    pico=False,
+    surreal=False,
+    htmx=False,
+    live=False,    
+    hdrs=(datastar_script,),
+)
+
+@rt("/")
+def index():
+    return Div(
+        H2("Datastar + FastHTML Example", cls="text-xl font-bold mb-4"),
+        Div(
+            "Using signals we default the starting count to 5",
+            ds_signals(count="5")
+        ),
+        Button(
+            "Increment",
+            ds_on(click="$count++"),
+            cls="btn btn-primary mr-2"
+        ),
+        Button(
+            "Reset",
+            ds_on(click="$count = 0"),
+            cls="btn btn-warning"
+        ),
+        Div(
+            "Count: ",
+            Span(ds_text("$count"), cls="font-mono"),
+            cls="mt-2"
+        ),
+        cls="p-4 space-y-2"
+    )
+
+if __name__ == "__main__":
+    serve()    
+```
+
 ## Features
 
 `ft-datastar` provides a set of helper functions that make it easy to use [Datastar](https://data-star.dev/) with [FastHTML](https://github.com/answerDotAI/fasthtml/). These helpers map directly to Datastar attributes and functionality.
@@ -33,8 +79,8 @@ pip install git+https://github.com/banditburai/ft-datastar.git
 | Function | Description |
 |----------|-------------|
 | `sse(handler)` | Decorator for SSE endpoint handlers |
-| `signal_update(**signals)` | Update signal values |
-| `fragment_update(fragment, selector, merge_mode)` | Update DOM fragments |
+| `update_siganls(**signals)` | Update signal values |
+| `update_fragments(fragment, selector, merge_mode)` | Update DOM fragments |
 | `FastHTMLDatastarSSEResponse` | Response class for SSE streams |
 
 ### Components

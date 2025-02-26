@@ -1326,10 +1326,10 @@ async def quiz_action():
     )
     
     # Update the question fragment with proper selector and merge mode
-    yield fragment_update(question_fragment, selector="#question2", merge_mode="morph")
+    yield update_fragments(question_fragment, selector="#question2", merge_mode="morph")
     
     # Update the signals
-    yield signal_update(
+    yield update_signals(
         question2=qna["question"],
         answer2=qna["answer"],
         response2=""
@@ -1344,8 +1344,8 @@ Key enhancements:
 • Server communication with the `@get` directive for dynamic content
 • Questions fetched from the server during user interaction
 • Real-time UI updates with SSE without page reloads
-• Server-side signal updates with `signal_update`
-• HTML fragment updates with `fragment_update`
+• Server-side signal updates with `update_signals`
+• HTML fragment updates with `update_fragments`
 
 Unlike the previous example where all interaction happens in the browser, this quiz makes additional server requests during use to fetch new questions and answers, demonstrating how Datastar bridges client and server functionality.
 """
@@ -1413,10 +1413,10 @@ async def quiz_action():
     )
     
     # Update the question fragment with proper selector and merge mode
-    yield fragment_update(question_fragment, selector="#question2", merge_mode="morph")
+    yield update_fragments(question_fragment, selector="#question2", merge_mode="morph")
     
     # Update the signals
-    yield signal_update(
+    yield update_signals(
         question2=qna["question"],
         answer2=qna["answer"],
         response2=""
@@ -1427,7 +1427,7 @@ async def quiz_action():
         title="Server-Enhanced Quiz",
         id_slug="server-quiz",
         description=description,
-        function_name="@get, signal_update, fragment_update",
+        function_name="@get, update_signals, update_fragments",
         function_example='Button(ds_on(click="@get(\'/actions/quiz\')"), "Fetch Question")',
         code_snippet=code_snippet,
         example_func=backend_quiz_example,
@@ -1557,8 +1557,8 @@ Datastar provides a powerful way to create server routes that can send real-time
 Key concepts:
 • The `@sse` decorator marks a route as an SSE endpoint
 • SSE routes can yield multiple updates to the client
-• `fragment_update` replaces or modifies HTML elements
-• `signal_update` changes signal values without reloading the page
+• `update_fragments` replaces or modifies HTML elements
+• `update_signals` changes signal values without reloading the page
 
 Route setup:
 • Create a route with `@rt("/your/path")` 
@@ -1618,7 +1618,7 @@ async def minimal_post_example(testParam: str):
     # Process the input and update signals
     processed = f"Processed: {testParam.upper()}"
     
-    yield signal_update(
+    yield update_signals(
         processedResult=json_dumps(processed),
         minimalSignal="prev => prev + 1"  # Increment using a function
     )
@@ -1628,8 +1628,8 @@ async def minimal_post_example(testParam: str):
         title="Server-Sent Events Routes",
         id_slug="sse-routes",
         description=description,
-        function_name="@sse, signal_update, fragment_update",
-        function_example='@rt("/api/data") @sse async def handler(): yield signal_update(...)',
+        function_name="@sse, update_signals, update_fragments",
+        function_example='@rt("/api/data") @sse async def handler(): yield update_signals(...)',
         code_snippet=code_snippet,
         example_func=minimal_test_ui,
         example_url="/minimal-test",
@@ -1663,7 +1663,7 @@ def indicator_demo():
 @sse
 async def load_data_action():        
     await asyncio.sleep(2)
-    yield signal_update(data=json_dumps("Loaded!"))
+    yield update_signals(data=json_dumps("Loaded!"))
 
 
 def data_indicator_section():
@@ -1677,7 +1677,7 @@ def data_indicator_section():
     • Combine with `ds_show` or `ds_classes` to create responsive loading states
     • Works with all HTTP methods: GET, POST, PUT, PATCH, and DELETE
     
-    On the server side, you need to use the `@sse` decorator on your route handler and yield updates using `signal_update()`. This allows the server to send real-time updates to the client while maintaining the loading state correctly.
+    On the server side, you need to use the `@sse` decorator on your route handler and yield updates using `update_signals()`. This allows the server to send real-time updates to the client while maintaining the loading state correctly.
     """
     
     function_name = "ds_indicator(signal_name)"
@@ -1715,7 +1715,7 @@ async def load_data_action():
     
     # Send data back to the client
     # The ds_indicator signal will automatically be set to false when this completes
-    yield signal_update(data=json_dumps("Loaded!"))
+    yield update_signals(data=json_dumps("Loaded!"))
 """
     
     return ExampleSection(
@@ -1962,7 +1962,7 @@ def complex_example_ui():
 async def complex_handler(testParam: str = ""):
     try:
         # Initial signal update
-        yield signal_update(
+        yield update_signals(
             complex_loading="true",
             complex_request_count="prev => prev + 1"
         )
@@ -1981,7 +1981,7 @@ async def complex_handler(testParam: str = ""):
             cls="alert alert-info"
         )
         
-        yield fragment_update(status_update, "#complex-status-container", "inner")
+        yield update_fragments(status_update, "#complex-status-container", "inner")
         
         await asyncio.sleep(2)
         
@@ -1991,10 +1991,10 @@ async def complex_handler(testParam: str = ""):
             cls="alert alert-success"
         )
         
-        yield fragment_update(final_status, "#complex-status-container", "inner")
+        yield update_fragments(final_status, "#complex-status-container", "inner")
         
         # Final signal update
-        yield signal_update(
+        yield update_signals(
             complex_loading="false",
             complex_result=json_dumps(testParam.upper() or "COMPLETED")
         )
@@ -2002,12 +2002,12 @@ async def complex_handler(testParam: str = ""):
     except Exception as e:
         # Handle errors gracefully
         error_message = f"Error: {str(e)}"
-        yield fragment_update(
+        yield update_fragments(
             Div(error_message, cls="alert alert-error"),
             "#complex-status-container", 
             "append"
         )
-        yield signal_update(
+        yield update_signals(
             complex_loading="false",
             complex_result=json_dumps(error_message)
         )
@@ -2027,8 +2027,8 @@ def data_complex_example_section():
     The example shows a pattern for long-running operations where you want to keep the user informed about progress. This approach is ideal for file uploads, data processing, or any task that requires multiple steps with visual feedback.
     """
     
-    function_name = "signal_update(), fragment_update()"
-    function_example = 'yield fragment_update(status_component, "#container", "inner")'
+    function_name = "update_signals(), update_fragments()"
+    function_example = 'yield update_fragments(status_component, "#container", "inner")'
     
     code_snippet = """
 @rt("/complex-example-ui")
@@ -2086,7 +2086,7 @@ def complex_example_ui():
 async def complex_handler(testParam: str = ""):
     try:
         # Initial signal update
-        yield signal_update(
+        yield update_signals(
             complex_loading="true",
             complex_request_count="prev => prev + 1"
         )
@@ -2103,7 +2103,7 @@ async def complex_handler(testParam: str = ""):
             cls="alert alert-info"
         )
         
-        yield fragment_update(status_update, "#complex-status-container", "inner")
+        yield update_fragments(status_update, "#complex-status-container", "inner")
         
         await asyncio.sleep(2)
         
@@ -2113,10 +2113,10 @@ async def complex_handler(testParam: str = ""):
             cls="alert alert-success"
         )
         
-        yield fragment_update(final_status, "#complex-status-container", "inner")
+        yield update_fragments(final_status, "#complex-status-container", "inner")
         
         # Final signal update
-        yield signal_update(
+        yield update_signals(
             complex_loading="false",
             complex_result=json_dumps(testParam.upper() or "COMPLETED")
         )
@@ -2124,12 +2124,12 @@ async def complex_handler(testParam: str = ""):
     except Exception as e:
         # Handle errors gracefully
         error_message = f"Error: {str(e)}"
-        yield fragment_update(
+        yield update_fragments(
             Div(error_message, cls="alert alert-error"),
             "#complex-status-container", 
             "append"
         )
-        yield signal_update(
+        yield update_signals(
             complex_loading="false",
             complex_result=json_dumps(error_message)
         )
@@ -2525,7 +2525,7 @@ def handle_errors(func):
                 yield update
         except Exception as e:
             error_message = f"Error: {str(e)}"
-            yield fragment_update(
+            yield update_fragments(
                 Div(error_message, cls="alert alert-error"),
                 "#todos_container",
                 "append"
@@ -2548,11 +2548,11 @@ async def add_todo(input_value: str):
     # A new todo is always active (not completed), so it's visible 
     # in "all" and "active" modes, but not in "completed" mode
     if todos_store.mode != "completed":
-        yield fragment_update(new_todo, "#todos_list", "append")
+        yield update_fragments(new_todo, "#todos_list", "append")
     
     # Get updated stats
     stats = calculate_todo_stats(todos_store.items, todos_store.lifetime_completed_count)
-    yield signal_update(
+    yield update_signals(
         active_count=stats["active_count"],
         completion_percentage=stats["completion_percentage"]
     )
@@ -2567,9 +2567,9 @@ async def delete_completed():
     todos_store.items = [item for item in todos_store.items if not item.completed]
     
     filtered_items = get_filtered_items(todos_store.items, todos_store.mode)
-    yield fragment_update(TodoList(filtered_items), "#todos_list", "inner")
+    yield update_fragments(TodoList(filtered_items), "#todos_list", "inner")
     stats = calculate_todo_stats(todos_store.items, todos_store.lifetime_completed_count)
-    yield signal_update(
+    yield update_signals(
         active_count=stats["active_count"],
         completion_percentage=stats["completion_percentage"]
     )
@@ -2587,9 +2587,9 @@ async def delete_todo(todo_id: str):
         todos_store.lifetime_completed_count += 1        
     todos_store.items = [item for item in todos_store.items if item.id != todo_id]
         
-    yield fragment_update("", f"#todo-{todo_id}", "outer")
+    yield update_fragments("", f"#todo-{todo_id}", "outer")
     stats = calculate_todo_stats(todos_store.items, todos_store.lifetime_completed_count)
-    yield signal_update(
+    yield update_signals(
         active_count=stats["active_count"],
         completion_percentage=stats["completion_percentage"]
     )
@@ -2606,9 +2606,9 @@ async def toggle_todo(todo_id: str):
     
     item.completed = not item.completed
     
-    yield fragment_update(item, f"#todo-{item.id}", "outer")
+    yield update_fragments(item, f"#todo-{item.id}", "outer")
     stats = calculate_todo_stats(todos_store.items, todos_store.lifetime_completed_count)
-    yield signal_update(
+    yield update_signals(
         active_count=stats["active_count"],
         completion_percentage=stats["completion_percentage"]
     )
@@ -2623,12 +2623,12 @@ async def toggle_all_todos():
         item.completed = not all_completed
     
     filtered_items = get_filtered_items(todos_store.items, todos_store.mode)
-    yield fragment_update(TodoList(filtered_items), "#todos_list", "inner")
+    yield update_fragments(TodoList(filtered_items), "#todos_list", "inner")
     
     # Get updated stats
     stats = calculate_todo_stats(todos_store.items, todos_store.lifetime_completed_count)
     
-    yield signal_update(
+    yield update_signals(
         active_count=stats["active_count"],
         completion_percentage=stats["completion_percentage"]
     )
@@ -2645,9 +2645,9 @@ async def update_todo(todo_id: str, edited_text: str):
     
         item.text = edited_text
     
-    yield fragment_update(item, f"#todo-{item.id}", "outer")
+    yield update_fragments(item, f"#todo-{item.id}", "outer")
     stats = calculate_todo_stats(todos_store.items, todos_store.lifetime_completed_count)
-    yield signal_update(completion_percentage=stats["completion_percentage"])
+    yield update_signals(completion_percentage=stats["completion_percentage"])
 
 @rt("/api/todos/filter/{mode}", methods=["PUT"])
 @sse
@@ -2656,8 +2656,8 @@ async def filter_todos(mode: str):
     """Filter todos by mode"""    
     todos_store.mode = mode
     filtered_items = get_filtered_items(todos_store.items, mode)
-    yield fragment_update(TodoList(filtered_items), "#todos_list", "inner")
-    yield signal_update(current_mode=mode)
+    yield update_fragments(TodoList(filtered_items), "#todos_list", "inner")
+    yield update_signals(current_mode=mode)
 
 @rt("/api/todos/reset", methods=["PUT"])
 @sse
@@ -2673,9 +2673,9 @@ async def reset_todos():
     todos_store.mode = "all"
     todos_store.lifetime_completed_count = 0
     
-    yield fragment_update(TodoList(todos_store.items), "#todos_list", "inner")
+    yield update_fragments(TodoList(todos_store.items), "#todos_list", "inner")
     stats = calculate_todo_stats(todos_store.items, todos_store.lifetime_completed_count)
-    yield signal_update(
+    yield update_signals(
         active_count=stats["active_count"],
         current_mode="all",
         completion_percentage=stats["completion_percentage"]

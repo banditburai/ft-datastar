@@ -59,8 +59,8 @@ def sse(handler: Callable) -> Callable:
         return FastHTMLDatastarSSEResponse(sse_generator)
     return wrapped
 
-def signal_update(**signals: str) -> Tuple[str, Dict[str, str]]:
+def update_signals(**signals: str) -> Tuple[str, Dict[str, str]]:
     return "signals", signals
 
-def fragment_update(fragment: Any, selector: Optional[str] = None, merge_mode: str = "morph") -> Tuple[str, Tuple[Any, Optional[str], str]]:
+def update_fragments(fragment: Any, selector: Optional[str] = None, merge_mode: str = "morph") -> Tuple[str, Tuple[Any, Optional[str], str]]:
     return "fragments", (fragment, selector, merge_mode)
