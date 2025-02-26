@@ -26,7 +26,7 @@ fastcore==1.7.29
     #   python-fasthtml
 fastlite==0.1.1
     # via python-fasthtml
-ft-datastar @ git+https://github.com/banditburai/ft-datastar.git@08d57ae4706609634e29061d0a3a527b67f05f41
+ft-datastar @ git+https://github.com/banditburai/ft-datastar.git@cf5f02dae02001f3bf8a1ea9bfd6adc2c73f275a
     # via examples (pyproject.toml)
 h11==0.14.0
     # via
@@ -69,7 +69,9 @@ soupsieve==2.6
 starlette==0.46.0
     # via python-fasthtml
 typing-extensions==4.12.2
-    # via beautifulsoup4
+    # via
+    #   anyio
+    #   beautifulsoup4
 uvicorn==0.34.0
     # via python-fasthtml
 uvloop==0.21.0
