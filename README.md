@@ -79,7 +79,7 @@ if __name__ == "__main__":
 | Function | Description |
 |----------|-------------|
 | `sse(handler)` | Decorator for SSE endpoint handlers |
-| `update_siganls(**signals)` | Update signal values |
+| `update_signals(**signals)` | Update signal values |
 | `update_fragments(fragment, selector, merge_mode)` | Update DOM fragments |
 | `FastHTMLDatastarSSEResponse` | Response class for SSE streams |
 
